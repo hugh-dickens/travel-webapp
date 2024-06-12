@@ -108,3 +108,12 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+
+
+## Development help and tips
+
+To create a new component in the frontend, the create-component.js file needs to be run:
+
+```bash
+pnpm run create-component MyNewComponent
+```
