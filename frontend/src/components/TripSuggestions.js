@@ -1,0 +1,3 @@
+/*
+Display the list of trip suggestions based on user preferences.
+*/
