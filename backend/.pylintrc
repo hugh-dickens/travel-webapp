@@ -1,0 +1,6 @@
+[FORMAT]
+max-line-length=88
+
+[DESIGN]
+max-args=5
+max-attributes=10

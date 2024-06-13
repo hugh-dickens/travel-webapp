@@ -1,14 +1,14 @@
-# RhythmRoam
+# Expedition Planner (to be renamed)
 
 > **NOTE:** This project is in its early stages and is a work in progress. The current version focuses on the MVP requirements, and future updates will expand its functionality. The below also contains the INTENDED design and output of this project which is subject to change and iteration. It's merely here as a goal.
 
 ## Overview
 
-RhythmRoam is a web application designed to help users plan outdoor activity-focused trips, such as climbing, running, mountaineering, and mountain biking. The application takes user preferences and suggests trips with different timespans, estimates costings, calculates carbon footprints, and determines the cost of required gear.
+Expedition Planner is a web application designed to help users plan outdoor activity-focused trips, such as climbing, running, mountaineering, and mountain biking. The application takes user preferences and suggests trips with different timespans, estimates costings, calculates carbon footprints, and determines the cost of required gear.
 
 ## MVP Requirements
 
-The Minimum Viable Product (MVP) for RhythmRoam includes the following features:
+The Minimum Viable Product (MVP) for Expedition Planner includes the following features:
 
 1. **User Preferences Form**:
     - Collect user preferences for travel plans, including preferred activities, budget, location, duration, and other relevant details.
