@@ -16,7 +16,14 @@ const PreferencesForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPreferences({ activity, destination, travelMode, cost, carbonFootprint, duration });
+    setPreferences({
+      activity,
+      destination,
+      travelMode,
+      cost,
+      carbonFootprint,
+      duration,
+    });
   };
 
   return (
@@ -33,7 +40,10 @@ const PreferencesForm = () => {
       </div>
       <div>
         <label>Destination:</label>
-        <select value={destination} onChange={(e) => setDestination(e.target.value)}>
+        <select
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        >
           <option value="">Select Destination</option>
           <option value="Dolomites">Dolomites</option>
           <option value="Kalymnos">Kalymnos</option>
@@ -43,7 +53,10 @@ const PreferencesForm = () => {
       </div>
       <div>
         <label>Travel Mode:</label>
-        <select value={travelMode} onChange={(e) => setTravelMode(e.target.value)}>
+        <select
+          value={travelMode}
+          onChange={(e) => setTravelMode(e.target.value)}
+        >
           <option value="">Select Travel Mode</option>
           <option value="car">Car</option>
           <option value="plane">Plane</option>
@@ -62,7 +75,10 @@ const PreferencesForm = () => {
       </div>
       <div>
         <label>Carbon Footprint:</label>
-        <select value={carbonFootprint} onChange={(e) => setCarbonFootprint(e.target.value)}>
+        <select
+          value={carbonFootprint}
+          onChange={(e) => setCarbonFootprint(e.target.value)}
+        >
           <option value="">Select Carbon Footprint</option>
           <option value="extremely low">Extremely Low</option>
           <option value="low">Low</option>
@@ -85,4 +101,3 @@ const PreferencesForm = () => {
 };
 
 export default PreferencesForm;
-

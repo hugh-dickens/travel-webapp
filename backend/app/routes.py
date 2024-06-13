@@ -2,14 +2,17 @@
 Setup the main routes for the application
 """
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify  # , request
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/api/trip-suggestions", methods=["POST"])
 def get_trip_suggestions():
-    preferences = request.json
+    """
+    get trip suggestions api call
+    """
+    # preferences = request.json
     # Simulate trip suggestions
     trips = [
         {"name": "Mountain Climbing in Alps", "cost": "$2000"},
