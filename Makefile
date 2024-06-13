@@ -16,7 +16,7 @@ frontend-format:
 	cd $(FRONTEND_DIR) && prettier --write "src/**/*.{js,jsx,ts,tsx}"
 
 frontend-lint:
-	cd $(FRONTEND_DIR) && eslint "src/**/*.{js,jsx,ts,tsx}"
+	cd $(FRONTEND_DIR) && pnpm run lint
 
 # Combined tasks
 format: backend-format frontend-format

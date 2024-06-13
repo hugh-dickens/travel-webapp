@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
 export const PreferencesContext = createContext();
 
@@ -17,4 +18,9 @@ export const PreferencesProvider = ({ children }) => {
       {children}
     </PreferencesContext.Provider>
   );
+};
+
+// Add prop type validation
+PreferencesProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
