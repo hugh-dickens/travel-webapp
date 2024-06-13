@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
-const PreferencesContext = createContext();
+export const PreferencesContext = createContext();
 
 export const PreferencesProvider = ({ children }) => {
-  const [preferences, setPreferences] = useState(null);
+  const [preferences, setPreferences] = useState({ activity: '', destination: '', travelMode: '' });
 
   return (
     <PreferencesContext.Provider value={{ preferences, setPreferences }}>
@@ -12,4 +12,3 @@ export const PreferencesProvider = ({ children }) => {
   );
 };
 
-export const usePreferences = () => useContext(PreferencesContext);

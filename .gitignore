@@ -80,3 +80,5 @@ dmypy.json
 .aws/
 
 .conda/
+
+notes.txt
