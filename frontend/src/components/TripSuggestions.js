@@ -2,36 +2,26 @@
 Display the list of trip suggestions based on user preferences.
 */
 
-import React, { useEffect, useState } from 'react';
-import { usePreferences } from '../context/PreferencesContext';
-import axios from 'axios';
+import React, { useContext } from 'react';
+import { PreferencesContext } from '../context/PreferencesContext';
 
 const TripSuggestions = () => {
-  const { preferences } = usePreferences();
-  const [trips, setTrips] = useState([]);
+  const { preferences } = useContext(PreferencesContext);
 
-  useEffect(() => {
-    if (preferences) {
-      axios.post('http://localhost:5000/api/trip-suggestions', preferences)
-        .then(response => {
-          setTrips(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching trip suggestions:', error);
-        });
+  const getSuggestion = () => {
+    if (preferences.destination && preferences.travelMode && preferences.cost && preferences.activity && preferences.carbonFootprint && preferences.duration) {
+      return `We suggest you go to ${preferences.destination} by ${preferences.travelMode}, if you would like to ${preferences.activity}. This trip will cost you ${preferences.cost} and have a ${preferences.carbonFootprint} carbon footprint. The length of the trip will be ${preferences.duration}.`;
     }
-  }, [preferences]);
+    return 'Please select preferences to get a suggestion.';
+  };
 
   return (
     <div>
       <h2>Trip Suggestions</h2>
-      <ul>
-        {trips.map((trip, index) => (
-          <li key={index}>{trip.name} - {trip.cost}</li>
-        ))}
-      </ul>
+      <p>{getSuggestion()}</p>
     </div>
   );
 };
 
 export default TripSuggestions;
+
