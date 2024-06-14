@@ -11,10 +11,10 @@ Expedition Planner is a web application designed to help users plan outdoor acti
 The Minimum Viable Product (MVP) for Expedition Planner includes the following features:
 
 1. **User Preferences Form**:
-    - Collect user preferences for travel plans, including preferred activities, budget, location, duration, and other relevant details.
+    - Collect user preferences for travel plans, including preferred activity, budget, location, duration, and other relevant details.
 
 2. **Trip Suggestions**:
-    - Based on user preferences, suggest trips with various timespans and activities.
+    - Based on user preferences, suggest trips with various timespans and activity.
     - Display basic information about each trip, including the destination, activity type, duration, and estimated cost.
 
 3. **Cost Estimation**:
@@ -24,7 +24,7 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
     - Estimate the carbon footprint for each trip based on the mode of travel and distance.
 
 5. **Gear Cost Calculation**:
-    - Estimate the cost of any required gear for the trip based on the selected activities.
+    - Estimate the cost of any required gear for the trip based on the selected activity.
 
 ## Technologies Used (the fun stuff)
 
@@ -64,12 +64,12 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 
 2. Install dependencies:
     ```bash
-    npm install
+    pnpm install
     ```
 
 3. Start the development server:
     ```bash
-    npm start
+    pnpm start
     ```
 
 ### Backend Setup

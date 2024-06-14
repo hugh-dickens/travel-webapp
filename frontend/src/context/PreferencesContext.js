@@ -7,7 +7,7 @@ export const PreferencesProvider = ({ children }) => {
   const [preferences, setPreferences] = useState({
     activity: '',
     destination: '',
-    travelMode: '',
+    travelModes: '',
     cost: '',
     carbonFootprint: '',
     duration: '',

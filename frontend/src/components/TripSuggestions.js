@@ -2,32 +2,54 @@
 Display the list of trip suggestions based on user preferences.
 */
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
+import axios from 'axios';
 
 const TripSuggestions = () => {
   const { preferences } = useContext(PreferencesContext);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const getSuggestion = () => {
-    if (
-      preferences.destination &&
-      preferences.travelMode &&
-      preferences.cost &&
-      preferences.activity &&
-      preferences.carbonFootprint &&
-      preferences.duration
-    ) {
-      return `We suggest you go to ${preferences.destination} by ${preferences.travelMode}, if you would like to ${preferences.activity}. This trip will cost you ${preferences.cost} and have a ${preferences.carbonFootprint} carbon footprint. The length of the trip will be ${preferences.duration}.`;
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        console.log('Fetching suggestions with preferences:', preferences);
+        const response = await axios.post('/api/trip-suggestions', preferences);
+        console.log('Suggestions received:', response.data);
+        setSuggestions(response.data);
+      } catch (error) {
+        console.error('Error fetching trip suggestions:', error);
+      }
+    };
+
+    if (preferences && Object.keys(preferences).length > 0) {
+      fetchSuggestions();
     }
-    return 'Please select preferences to get a suggestion.';
+  }, [preferences]);
+
+  const renderSuggestions = () => {
+    if (suggestions.length === 0) {
+      return <p>No suggestions available.</p>;
+    }
+
+    return (
+      <ul>
+        {suggestions.map((trip, index) => (
+          <li key={index}>
+            {trip.name}: {trip.cost}
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
     <div>
       <h2>Trip Suggestions</h2>
-      <p>{getSuggestion()}</p>
+      <p>{renderSuggestions()}</p>
     </div>
   );
 };
 
 export default TripSuggestions;
+

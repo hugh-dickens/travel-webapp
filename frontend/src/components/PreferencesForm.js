@@ -1,9 +1,11 @@
 /*
 Form for users to input their travel preferences.
 */
+// frontend/src/components/PreferencesForm.js
 
 import React, { useState, useContext } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
+import { fetchSuggestions } from '../services/api';  // Import the fetchSuggestions function
 
 const PreferencesForm = () => {
   const { setPreferences } = useContext(PreferencesContext);
@@ -14,16 +16,17 @@ const PreferencesForm = () => {
   const [carbonFootprint, setCarbonFootprint] = useState('');
   const [duration, setDuration] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setPreferences({
-      activity,
-      destination,
-      travelMode,
-      cost,
-      carbonFootprint,
-      duration,
-    });
+    const preferences = { activity, destination, travelMode, cost, carbonFootprint, duration };
+    try {
+      const suggestions = await fetchSuggestions(preferences);
+      console.log('Received suggestions:', suggestions);
+      // Do something with the suggestions (e.g., update state, display them)
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+      // Handle error as needed (e.g., display an error message)
+    }
   };
 
   return (
