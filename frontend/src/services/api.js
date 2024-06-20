@@ -18,6 +18,6 @@ export const fetchSuggestions = async (preferences) => {
     
     return response.data;
   } catch (error) {
-    throw error;  // Handle error as per your application's error handling strategy
+    throw error;  // currently no error handling strategy
   }
 };

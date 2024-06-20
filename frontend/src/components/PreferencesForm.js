@@ -5,10 +5,10 @@ Form for users to input their travel preferences.
 
 import React, { useState, useContext } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
-import { fetchSuggestions } from '../services/api';  // Import the fetchSuggestions function
+import axios from 'axios';
 
 const PreferencesForm = () => {
-  const { setPreferences } = useContext(PreferencesContext);
+  const { setPreferences, setSuggestions } = useContext(PreferencesContext);
   const [activity, setActivity] = useState('');
   const [destination, setDestination] = useState('');
   const [travelMode, setTravelMode] = useState('');
@@ -20,13 +20,13 @@ const PreferencesForm = () => {
     e.preventDefault();
     const preferences = { activity, destination, travelMode, cost, carbonFootprint, duration };
     try {
-      const suggestions = await fetchSuggestions(preferences);
-      console.log('Received suggestions:', suggestions);
-      // Do something with the suggestions (e.g., update state, display them)
+      const response = await axios.post('http://127.0.0.1:5000/api/trip-suggestions', preferences);
+      setSuggestions(response.data);  // Update suggestions in the context
+      console.log('Received suggestions:', response.data);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
-      // Handle error as needed (e.g., display an error message)
     }
+    setPreferences(preferences);  // Update preferences in the context
   };
 
   return (

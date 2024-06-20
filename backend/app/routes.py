@@ -3,20 +3,18 @@ Setup the main routes for the application
 """
 
 from flask import Blueprint, request, jsonify
-from flask_cors import cross_origin # useful in DEV but should be removed if ever in production
 
 main = Blueprint("main", __name__)
 
 # Sample trip data
 sample_trips = [
-    {"name": "Rock Climbing in Dolomites", "activity": "rock climb", "destination": "Dolomites", "cost": 1000, "carbonFootprint": "low", "duration": 7, "travelMode": "car"},
-    {"name": "Alpine Climbing in Alps", "activity": "alpine climb", "destination": "Aosta valley", "cost": 2000, "carbonFootprint": "medium", "duration": 10, "travelMode": "train"},
-    {"name": "Mountain Biking in Kalymnos", "activity": "mountain bike", "destination": "Kalymnos", "cost": 1500, "carbonFootprint": "low", "duration": 5, "travelMode": "plane"},
-    {"name": "Hiking in Ailefroide", "activity": "hike", "destination": "Ailefroide", "cost": 500, "carbonFootprint": "extremely low", "duration": 3, "travelMode": "train"},
+    {"name": "Rock climbing in Kalymnos", "activity": "rock climb", "destination": "Kalymnos", "cost": 1000/7, "carbonFootprint": "low", "duration": 7, "travelMode": "car"},
+    {"name": "Alpine climbing in Ailefroide", "activity": "alpine climb", "destination": "Ailefroide", "cost": 2000/10, "carbonFootprint": "medium", "duration": 10, "travelMode": "train"},
+    {"name": "Mountain biking in Dolomites", "activity": "mountain bike", "destination": "Dolomites", "cost": 1500/5, "carbonFootprint": "low", "duration": 5, "travelMode": "plane"},
+    {"name": "Hiking in Aosta Valley", "activity": "hike", "destination": "Aosta Valley", "cost": 500/3, "carbonFootprint": "extremely low", "duration": 3, "travelMode": "train"},
 ]
 
-@main.route("/api/trip-suggestions", methods=["POST", "OPTIONS"])
-@cross_origin()  # Apply cross_origin decorator
+@main.route("/api/trip-suggestions", methods=["POST"])
 def get_trip_suggestions():
     if request.method == "POST":
         preferences = request.json
