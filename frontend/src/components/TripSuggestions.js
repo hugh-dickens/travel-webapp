@@ -6,28 +6,27 @@ import React, { useContext } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
 
 const TripSuggestions = () => {
-  const { preferences } = useContext(PreferencesContext);
-
-  const getSuggestion = () => {
-    if (
-      preferences.destination &&
-      preferences.travelMode &&
-      preferences.cost &&
-      preferences.activity &&
-      preferences.carbonFootprint &&
-      preferences.duration
-    ) {
-      return `We suggest you go to ${preferences.destination} by ${preferences.travelMode}, if you would like to ${preferences.activity}. This trip will cost you ${preferences.cost} and have a ${preferences.carbonFootprint} carbon footprint. The length of the trip will be ${preferences.duration}.`;
-    }
-    return 'Please select preferences to get a suggestion.';
-  };
+  const { suggestions } = useContext(PreferencesContext);
 
   return (
     <div>
       <h2>Trip Suggestions</h2>
-      <p>{getSuggestion()}</p>
+      {suggestions.length > 0 ? (
+        suggestions.map((trip, index) => (
+          <div key={index} style={{ marginBottom: '10px' }}>
+            <strong>{trip.name}</strong>
+            <p>
+              Cost: £{trip.cost} average per day<br />
+              Carbon Footprint: {trip.carbonFootprint}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>Please select preferences to get a suggestion.</p>
+      )}
     </div>
   );
 };
 
 export default TripSuggestions;
+
