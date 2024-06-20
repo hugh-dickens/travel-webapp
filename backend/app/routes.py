@@ -20,7 +20,7 @@ def get_trip_suggestions():
         preferences = request.json
         # Simulate trip suggestions (replace with your actual logic)
         trips = [
-            sample_trips[1]
+            sample_trips[2]
         ]
         return jsonify(trips)
     else:
