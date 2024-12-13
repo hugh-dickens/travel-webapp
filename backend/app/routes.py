@@ -19,7 +19,7 @@ main = Blueprint("main", __name__)
 def get_trip_suggestions():
     if request.method == "POST":
         preferences = request.json
-        trips = get_trip(activity=preferences['activity'], destination= preferences['destination'], travelMode=preferences['travelMode'], cost=preferences['cost'],
+        trips = get_trip(activity=preferences['activity'], travelMode=preferences['travelMode'], cost=preferences['cost'],
                          carbonFootprint=preferences['carbonFootprint'], duration=preferences['duration'])
         return jsonify([trips])
     else:

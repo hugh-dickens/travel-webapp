@@ -42,19 +42,6 @@ const PreferencesForm = () => {
         </select>
       </div>
       <div>
-        <label>Destination:</label>
-        <select
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-        >
-          <option value="">Select Destination</option>
-          <option value="Dolomites">Dolomites</option>
-          <option value="Kalymnos">Kalymnos</option>
-          <option value="Ailefroide">Ailefroide</option>
-          <option value="Aosta valley">Aosta Valley</option>
-        </select>
-      </div>
-      <div>
         <label>Travel Mode:</label>
         <select
           value={travelMode}
