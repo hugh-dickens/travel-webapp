@@ -7,7 +7,6 @@ import './styles.css';
 const App = () => (
   <PreferencesProvider>
     <div className="styles">
-      <h1>Expedition Planner</h1>
       <PreferencesForm />
       <TripSuggestions />
     </div>
