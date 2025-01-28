@@ -1,10 +1,10 @@
-# Expedition Planner (to be renamed)
+# Expedition Planner
 
-> **NOTE:** This project is in its early stages and is a work in progress. The current version focuses on the MVP requirements, and future updates will expand its functionality. The below also contains the INTENDED design and output of this project which is subject to change and iteration. It's merely here as a goal.
+> **NOTE:** This project is in its early stages and is a work in progress. The current version focuses on the MVP requirements, and future updates will expand its functionality. The below also contains the INTENDED design and output of this project which is subject to change and iteration.
 
 ## Overview
 
-Expedition Planner is a web application designed to help users plan outdoor activity-focused trips, such as climbing, running, mountaineering, and mountain biking. The application takes user preferences and suggests trips with different timespans, estimates costings, calculates carbon footprints, and determines the cost of required gear.
+Expedition Planner is a web application designed to help users plan outdoor activity-focused trips. The application filters through user preferences to suggest and display trips with different timespans, estimate costings, calculate carbon footprints, and determine the cost of required gear.
 
 ## MVP Requirements
 
@@ -40,6 +40,7 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 - **Python**: The backend of the application will be built using Python to handle API requests and perform the necessary calculations and data processing.
 - **Flask**: A lightweight WSGI web application framework for Python, which will be used to create the API endpoints for handling user preferences and generating trip suggestions.
 - **SQLAlchemy**: An SQL toolkit and Object-Relational Mapping (ORM) library for Python, which will be used to interact with the database.
+- **PostgreSQL**: The all important database.
 
 ### Other Tools
 
@@ -82,7 +83,7 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 2. Create a virtual environment:
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    source venv/bin/activate  # On Windows use `venv/Scripts/activate`
     ```
 
 3. Install dependencies:
@@ -100,10 +101,6 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 1. Open your browser and navigate to `http://localhost:3000` to access the frontend.
 2. Fill in the user preferences form and submit it.
 3. View the suggested trips, cost estimations, carbon footprint calculations, and gear cost calculations based on your preferences.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
 
 ## License
 
