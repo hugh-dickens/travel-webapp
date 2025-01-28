@@ -4,7 +4,7 @@ Setup the main routes for the application
 
 from flask import Blueprint, request, jsonify
 from app.calculations.trip import get_trip
-from app.models import Trip, db
+from app.models import Trip, db, add_sample_trips
 
 main = Blueprint("main", __name__)
 
@@ -19,29 +19,44 @@ def get_trip_suggestions():
         return jsonify({"message": "OPTIONS request received"}), 200  # Respond to OPTIONS requests
 
 
-# Example usage:
-# curl -X POST http://localhost:5000/add_trip \
-# -H "Content-Type: application/json" \
-# -d '{"name": "Hiking in Aosta Valley", "activity_type": "hike", "destination": "Aosta Valley", "cost": 200, "carbonFootprint": "extremely low", "duration": 3, "travelMode": "train"}'
+@main.route('/add_sample_trips', methods=['POST'])
+def test_add_sample_trips():
+    add_sample_trips()
+    return {"message": "Sample trips added successfully!"}, 201
+    
+
+''' Example usage:
+ curl -X POST http://localhost:5000/add_trip \
+ -H "Content-Type: application/json" \
+ -d '{"name": "Test activity in Test", "activity_type": "testing", "destination": "test", "cost": 123, "carbonFootprint": "testing", "duration": 2, "travelMode": "test"}'
+'''
 @main.route('/add_trip', methods=['POST'])
 def add_trip():
     data = request.get_json()
-    new_trip = Trip(name=data['name'], activity_type=data['activity_type'])
-    db.session.add(new_trip)
-    db.session.commit()
-    return {"message": "Trip added successfully!"}, 201
+    try:
+        new_trip = Trip(
+            name=data['name'],
+            activity_type=data['activity_type'],
+            destination=data['destination'],
+            cost=data['cost'],
+            carbonFootprint=data['carbonFootprint'],
+            duration=data['duration'],
+            travelMode=data['travelMode']
+        )
+        db.session.add(new_trip)
+        db.session.commit()
+        return {"message": "Trip added successfully!"}, 201
+    except KeyError as e:
+        return {"error": f"Missing field: {str(e)}"}, 400
 
 
-# curl -X GET http://localhost:5000/api/trips
 @main.route('/api/trips', methods=['GET'])
-# For debugging purposes: curl http://localhost:5000/api/trips
 def get_all_trips():
     trips = Trip.query.all()  # Get all trips from the database
     trips_list = [{"id": trip.id, "name": trip.name, "activity_type": trip.activity_type} for trip in trips]
     return jsonify(trips_list), 200
 
 
-# curl -X DELETE http://localhost:5000/delete_trip/1
 @main.route('/delete_trip/<int:id>', methods=['DELETE'])
 def delete_trip(id):
     trip = Trip.query.get_or_404(id)

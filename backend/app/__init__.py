@@ -2,7 +2,6 @@
 
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
 from app.models import db
@@ -24,9 +23,6 @@ def create_app():
 
     # Initialize the database with the app
     db.init_app(app)
-
-    # Initialize Migrate with the app and db instance
-    migrate = Migrate(app, db)
 
     # Register blueprints and other configurations
     app.register_blueprint(main_blueprint)
