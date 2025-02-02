@@ -3,7 +3,8 @@ Setup the main routes for the application
 """
 
 from flask import Blueprint, request, jsonify
-from app.calculations.trip import get_trip
+from app.trip_planner import Trip
+
 from app.models import Trip, db, add_sample_trips
 
 main = Blueprint("main", __name__)
@@ -12,9 +13,29 @@ main = Blueprint("main", __name__)
 def get_trip_suggestions():
     if request.method == "POST":
         preferences = request.json
-        trips = get_trip(activity=preferences['activity'], travelMode=preferences['travelMode'], cost=preferences['cost'],
-                         carbonFootprint=preferences['carbonFootprint'], duration=preferences['duration'])
-        return jsonify([trips])
+        # Get the suggested trip based on the user’s preferences
+        trip = Trip.get_trip(
+            activity=preferences['activity'],
+            travelMode=preferences['travelMode'],
+            cost=preferences['cost'],
+            carbonFootprint=preferences['carbonFootprint'],
+            duration=preferences['duration']
+        )
+
+        # If a valid trip is found, return the trip data as a JSON response
+        if trip:
+            return jsonify({
+                "name": trip.name,
+                "activity": trip.activity,
+                "destination": trip.destination,
+                "cost": trip.cost,
+                "carbonFootprint": trip.carbonFootprint,
+                "duration": trip.duration,
+                "travelMode": trip.travelMode
+            }), 200
+        else:
+            # If no trip is found, return a message indicating failure
+            return jsonify({"message": "No matching trip found."}), 404
     else:
         return jsonify({"message": "OPTIONS request received"}), 200  # Respond to OPTIONS requests
 
