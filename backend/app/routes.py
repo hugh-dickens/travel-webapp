@@ -3,41 +3,62 @@ Setup the main routes for the application
 """
 
 from flask import Blueprint, request, jsonify
-from app.trip_planner import Trip
+import traceback # for debugging
+from backend.app.trip_planner import Trip, TripPlanner
+from backend.app.models import Trip, db, add_sample_trips
+from backend.app.helpers import parse_range_or_value
 
-from app.models import Trip, db, add_sample_trips
+# Assuming trip_planner is globally available
+trip_planner = TripPlanner()
 
 main = Blueprint("main", __name__)
 
 @main.route("/api/trip-suggestions", methods=["POST"])
 def get_trip_suggestions():
-    if request.method == "POST":
+    try:
         preferences = request.json
-        # Get the suggested trip based on the user’s preferences
-        trip = Trip.get_trip(
+        if not preferences:
+            return jsonify({"error": "Missing JSON payload"}), 400
+        
+        required_keys = ['activity', 'travelMode', 'cost', 'carbonFootprint', 'duration']
+        for key in required_keys:
+            if key not in preferences:
+                return jsonify({"error": f"Missing key in request: {key}"}), 400
+        
+        # Parse cost and duration from range strings
+        cost_range = parse_range_or_value(preferences["cost"])
+        duration_range = parse_range_or_value(preferences["duration"])
+
+        if cost_range is None or duration_range is None:
+            return jsonify({"error": "Invalid cost or duration range format"}), 400
+
+        # Get the best trip suggestion using the TripPlanner logic
+        trip = trip_planner.suggest_trip(
             activity=preferences['activity'],
-            travelMode=preferences['travelMode'],
-            cost=preferences['cost'],
-            carbonFootprint=preferences['carbonFootprint'],
-            duration=preferences['duration']
+            travel_mode=preferences['travelMode'],
+            budget=cost_range[1],  # Max budget
+            carbon_preference=preferences['carbonFootprint'].lower(),
+            duration=duration_range[1]  # Max duration
         )
 
-        # If a valid trip is found, return the trip data as a JSON response
-        if trip:
+        if trip.name != "No suitable trip found":
             return jsonify({
                 "name": trip.name,
                 "activity": trip.activity,
                 "destination": trip.destination,
                 "cost": trip.cost,
-                "carbonFootprint": trip.carbonFootprint,
+                "carbonFootprint": trip.carbon_footprint,
                 "duration": trip.duration,
-                "travelMode": trip.travelMode
+                "travelMode": trip.travel_mode
             }), 200
         else:
-            # If no trip is found, return a message indicating failure
             return jsonify({"message": "No matching trip found."}), 404
-    else:
-        return jsonify({"message": "OPTIONS request received"}), 200  # Respond to OPTIONS requests
+
+    except Exception as e:
+        print("Error:", str(e))
+        print(traceback.format_exc())
+        return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
+
 
 
 @main.route('/add_sample_trips', methods=['POST'])

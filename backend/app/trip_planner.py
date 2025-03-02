@@ -43,8 +43,25 @@ class Trip:
 class TripPlanner:
     """Handles trip suggestions and additional filtering/sorting functionalities."""
 
-    def __init__(self, trips: List[Trip]):
-        self.trips = trips
+    def __init__(self, trips: Optional[List[Trip]] = None):
+        """
+        Initializes the TripPlanner with a list of trips.
+        If no trips are provided, default sample trips are used.
+        """
+        if trips is None:
+            self.trips = self.default_trips()
+        else:
+            self.trips = trips
+
+    @staticmethod
+    def default_trips() -> List[Trip]:
+        """Returns a default list of sample trips."""
+        return [
+            Trip("Rock climbing in Kalymnos", "rock climb", "Kalymnos", 1000, "low", 7, "car"),
+            Trip("Alpine climbing in Ailefroide", "alpine climb", "Ailefroide", 2000, "medium", 10, "train"),
+            Trip("Mountain biking in Dolomites", "mountain bike", "Dolomites", 1500, "low", 5, "plane"),
+            Trip("Hiking in Aosta Valley", "hike", "Aosta Valley", 500, "extremely low", 3, "train"),
+        ]
 
     def suggest_trip(self, activity: str, travel_mode: str, budget: int, carbon_preference: str, duration: int) -> Trip:
         """Suggests a trip based on user preferences using a scoring system."""
@@ -112,17 +129,9 @@ class TripPlanner:
         return None  # No exact match found
 
 
-# Sample trip data
-sample_trips = [
-    Trip("Rock climbing in Kalymnos", "rock climb", "Kalymnos", 1000 / 7, "low", 7, "car"),
-    Trip("Alpine climbing in Ailefroide", "alpine climb", "Ailefroide", 2000 / 10, "medium", 10, "train"),
-    Trip("Mountain biking in Dolomites", "mountain bike", "Dolomites", 1500 / 5, "low", 5, "plane"),
-    Trip("Hiking in Aosta Valley", "hike", "Aosta Valley", 500 / 3, "extremely low", 3, "train"),
-]
-
 # Example usage
 if __name__ == "__main__":
-    planner = TripPlanner(sample_trips)
+    planner = TripPlanner()
 
     print("Suggested Trip:", planner.suggest_trip(activity="hike", travel_mode="train", budget=600, carbon_preference="extremely low", duration=3))
     print("Trips under $800:", planner.filter_by_budget(800))

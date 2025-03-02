@@ -1,11 +1,11 @@
-# app/__init__.py
+# backend.app/__init__.py
 
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-from app.models import db
-from app.routes import main as main_blueprint
+from backend.app.models import db
+from backend.app.routes import main as main_blueprint
 
 
 # Load environment variables from .env file
