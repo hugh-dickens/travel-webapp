@@ -28,7 +28,9 @@ form {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
   max-width: 400px;
   margin: 0 auto;
-  transition: transform 0.3s, box-shadow 0.3s; /* Hover animation */
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s; /* Hover animation */
 }
 
 form:hover {
@@ -47,7 +49,8 @@ label {
   font-weight: bold;
 }
 
-select, input {
+select,
+input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -56,7 +59,8 @@ select, input {
   transition: border-color 0.3s ease;
 }
 
-select:focus, input:focus {
+select:focus,
+input:focus {
   border-color: #007bff;
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
@@ -79,7 +83,8 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-header, footer {
+header,
+footer {
   font-size: 16px;
 }
 footer p {

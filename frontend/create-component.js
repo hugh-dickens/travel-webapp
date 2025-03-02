@@ -32,7 +32,13 @@ const ${componentName} = () => {
 export default ${componentName};
 `;
 
-fs.writeFileSync(path.join(componentDir, `${componentName}.js`), componentTemplate);
-fs.writeFileSync(path.join(componentDir, `${componentName}.css`), `/* Styles for ${componentName} */`);
+fs.writeFileSync(
+  path.join(componentDir, `${componentName}.js`),
+  componentTemplate
+);
+fs.writeFileSync(
+  path.join(componentDir, `${componentName}.css`),
+  `/* Styles for ${componentName} */`
+);
 
 console.log(`Component ${componentName} created successfully.`);

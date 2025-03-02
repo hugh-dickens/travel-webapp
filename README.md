@@ -1,6 +1,6 @@
 # Expedition Planner
 
-> **NOTE:** This project is in its early stages and is a work in progress. The current version focuses on the MVP requirements, and future updates will expand its functionality. The below also contains the INTENDED design and output of this project which is subject to change and iteration.
+> **NOTE:** This project is a work in progress. The current version focuses on the MVP requirements, and future updates will expand its functionality. The below also contains the intended design and output of this project which is subject to change and iteration.
 
 ## Overview
 
@@ -11,20 +11,24 @@ Expedition Planner is a web application designed to help users plan outdoor acti
 The Minimum Viable Product (MVP) for Expedition Planner includes the following features:
 
 1. **User Preferences Form**:
-    - Collect user preferences for travel plans, including preferred activity, budget, location, duration, and other relevant details.
+
+   - Collect user preferences for travel plans, including preferred activity, budget, location, duration, and other relevant details.
 
 2. **Trip Suggestions**:
-    - Based on user preferences, suggest trips with various timespans and activity.
-    - Display basic information about each trip, including the destination, activity type, duration, and estimated cost.
+
+   - Based on user preferences, suggest trips with various timespans and activity.
+   - Display basic information about each trip, including the destination, activity type, duration, and estimated cost.
 
 3. **Cost Estimation**:
-    - Provide an estimated cost for each suggested trip, including travel, accommodation, and activity costs.
+
+   - Provide an estimated cost for each suggested trip, including travel, accommodation, and activity costs.
 
 4. **Carbon Footprint Calculation**:
-    - Estimate the carbon footprint for each trip based on the mode of travel and distance.
+
+   - Estimate the carbon footprint for each trip based on the mode of travel and distance.
 
 5. **Gear Cost Calculation**:
-    - Estimate the cost of any required gear for the trip based on the selected activity.
+   - Estimate the cost of any required gear for the trip based on the selected activity.
 
 ## Technologies Used (the fun stuff)
 
@@ -45,56 +49,69 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 ### Other Tools
 
 - **GitHub**: For version control and repository management.
-- **Visual Studio Code**: Recommended IDE for development.
-- **Postman**: For testing API endpoints.
+- **Visual Studio Code**: IDE used for development.
+- **Postman**: For testing API endpoints. The author has used this installed in VSCode.
 
 ## Setup and Installation
 
 ### Prerequisites
 
-- Node.js and npm
+- pnpm
 - Python and pip
 
 ### Frontend Setup
 
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/travel-webapp.git
-    cd travel-webapp/frontend
-    ```
+
+   ```bash
+   git clone https://github.com/your-username/travel-webapp.git
+   cd travel-webapp/frontend
+   ```
 
 2. Install dependencies:
-    ```bash
-    pnpm install
-    ```
+
+   ```bash
+   pnpm install
+   ```
 
 3. Start the development server:
-    ```bash
-    pnpm start
-    ```
+   ```bash
+   pnpm start
+   ```
 
 ### Backend Setup
 
 1. Navigate to the backend directory:
-    ```bash
-    cd ../backend
-    ```
+
+   ```bash
+   cd ../backend
+   ```
 
 2. Create a virtual environment:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv/Scripts/activate`
-    ```
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv/Scripts/activate`
+   ```
 
 3. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 4. Start the Flask server:
-    ```bash
-    python manage.py
-    ```
+   ```bash
+   flask run
+   ```
+
+### Runnings Tests
+
+Currently this project only has backend tests. To run, use the following command from inside the venv in the backend directory:
+
+```bash
+python -m unittest discover -s backend/tests
+```
 
 ## Usage
 
@@ -105,7 +122,6 @@ The Minimum Viable Product (MVP) for Expedition Planner includes the following f
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
-
 
 ## Development help and tips
 
