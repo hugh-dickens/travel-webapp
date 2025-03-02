@@ -1,14 +1,10 @@
-/*
-Form for users to input their travel preferences.
-*/
-// frontend/src/components/PreferencesForm.js
-
 import React, { useState, useContext } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
 import { fetchSuggestions } from '../services/api';
 
 const PreferencesForm = () => {
-  const { setPreferences, setSuggestions } = useContext(PreferencesContext);
+  const { setPreferences, setSuggestions, setError } =
+    useContext(PreferencesContext);
   const [activity, setActivity] = useState('');
   const [destination, setDestination] = useState('');
   const [travelMode, setTravelMode] = useState('');
@@ -18,15 +14,31 @@ const PreferencesForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const preferences = { activity, destination, travelMode, cost, carbonFootprint, duration };
+    const preferences = {
+      activity,
+      destination,
+      travelMode,
+      cost,
+      carbonFootprint,
+      duration,
+    };
+
     try {
-      const suggestions = await fetchSuggestions(preferences);  // Use fetchSuggestions function
-      setSuggestions(suggestions);  // Update suggestions in the context
-      console.log('Received suggestions:', suggestions);
+      const suggestions = await fetchSuggestions(preferences);
+
+      if (suggestions.error) {
+        setError(suggestions.error);
+        setSuggestions(null);
+      } else {
+        setSuggestions(suggestions);
+        setError(null);
+      }
+
+      setPreferences(preferences);
     } catch (error) {
-      console.error('Error fetching suggestions:', error);
+      setError('An unexpected error occurred while fetching trip suggestions.');
+      console.error('Error in handleSubmit:', error);
     }
-    setPreferences(preferences);  // Update preferences in the context
   };
 
   return (
@@ -57,10 +69,10 @@ const PreferencesForm = () => {
         <label>Cost:</label>
         <select value={cost} onChange={(e) => setCost(e.target.value)}>
           <option value="">Select Cost</option>
-          <option value="<£1000">{'<'}£1000</option>
-          <option value="£1000-£2000">£1000-£2000</option>
-          <option value="£2000-£4000">£2000-£4000</option>
-          <option value=">£4000">{'>'}£4000</option>
+          <option value="<$1000">{'<'}$1000</option>
+          <option value="$1000-$2000">$1000-$2000</option>
+          <option value="$2000-$4000">$2000-$4000</option>
+          <option value=">$4000">{'>'}$4000</option>
         </select>
       </div>
       <div>
