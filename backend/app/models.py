@@ -4,8 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class Trip(db.Model):
-    __tablename__ = 'trips'
+    __tablename__ = "trips"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -22,11 +23,43 @@ class Trip(db.Model):
 
 def add_sample_trips():
     sample_trips = [
-    {"name": "Rock climbing in Kalymnos", "activity_type": "rock climb", "destination": "Kalymnos", "cost": 1000, "carbonFootprint": "low", "duration": 7, "travelMode": "car"},
-    {"name": "Alpine climbing in Ailefroide", "activity_type": "alpine climb", "destination": "Ailefroide", "cost": 2000, "carbonFootprint": "medium", "duration": 10, "travelMode": "train"},
-    {"name": "Mountain biking in Dolomites", "activity_type": "mountain bike", "destination": "Dolomites", "cost": 1500, "carbonFootprint": "low", "duration": 5, "travelMode": "plane"},
-    {"name": "Hiking in Aosta Valley", "activity_type": "hike", "destination": "Aosta Valley", "cost": 500, "carbonFootprint": "extremely low", "duration": 3, "travelMode": "train"},
-]
+        {
+            "name": "Rock climbing in Kalymnos",
+            "activity_type": "rock climb",
+            "destination": "Kalymnos",
+            "cost": 1000,
+            "carbonFootprint": "low",
+            "duration": 7,
+            "travelMode": "car",
+        },
+        {
+            "name": "Alpine climbing in Ailefroide",
+            "activity_type": "alpine climb",
+            "destination": "Ailefroide",
+            "cost": 2000,
+            "carbonFootprint": "medium",
+            "duration": 10,
+            "travelMode": "train",
+        },
+        {
+            "name": "Mountain biking in Dolomites",
+            "activity_type": "mountain bike",
+            "destination": "Dolomites",
+            "cost": 1500,
+            "carbonFootprint": "low",
+            "duration": 5,
+            "travelMode": "plane",
+        },
+        {
+            "name": "Hiking in Aosta Valley",
+            "activity_type": "hike",
+            "destination": "Aosta Valley",
+            "cost": 500,
+            "carbonFootprint": "extremely low",
+            "duration": 3,
+            "travelMode": "train",
+        },
+    ]
     for trip in sample_trips:
         new_trip = Trip(
             name=trip["name"],
@@ -35,9 +68,8 @@ def add_sample_trips():
             cost=trip["cost"],
             carbonFootprint=trip["carbonFootprint"],
             duration=trip["duration"],
-            travelMode=trip["travelMode"]
+            travelMode=trip["travelMode"],
         )
         db.session.add(new_trip)
     db.session.commit()
     print("Sample trips added successfully!")
-    
