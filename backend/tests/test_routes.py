@@ -1,14 +1,18 @@
 import unittest
+
 from backend.app import create_app, db
 from backend.app.models import Trip
+
 
 class TestRoutes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Runs once before all tests to set up the test app and database."""
         cls.app = create_app()
-        cls.app.config['TESTING'] = True
-        cls.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'  # In-memory DB for fast testing
+        cls.app.config["TESTING"] = True
+        cls.app.config["SQLALCHEMY_DATABASE_URI"] = (
+            "sqlite:///:memory:"  # In-memory DB for fast testing
+        )
         cls.client = cls.app.test_client()
 
         with cls.app.app_context():
@@ -31,7 +35,7 @@ class TestRoutes(unittest.TestCase):
                 cost=100.0,
                 carbonFootprint="low",
                 duration=2,
-                travelMode="car"
+                travelMode="car",
             )
             db.session.add(trip)
             db.session.commit()
@@ -44,18 +48,21 @@ class TestRoutes(unittest.TestCase):
 
     def test_add_trip(self):
         """Test if a trip can be added successfully."""
-        response = self.client.post('/add_trip', json={
-            "name": "New Trip",
-            "activity_type": "hiking",
-            "destination": "Mountains",
-            "cost": 200,
-            "carbonFootprint": "medium",
-            "duration": 3,
-            "travelMode": "train"
-        })
+        response = self.client.post(
+            "/add_trip",
+            json={
+                "name": "New Trip",
+                "activity_type": "hiking",
+                "destination": "Mountains",
+                "cost": 200,
+                "carbonFootprint": "medium",
+                "duration": 3,
+                "travelMode": "train",
+            },
+        )
         self.assertEqual(response.status_code, 201)
         json_data = response.get_json()
-        self.assertIn("Trip added successfully!", json_data['message'])
+        self.assertIn("Trip added successfully!", json_data["message"])
 
         # Verify trip was added
         with self.app.app_context():
@@ -64,13 +71,13 @@ class TestRoutes(unittest.TestCase):
 
     def test_get_all_trips(self):
         """Test fetching all trips."""
-        response = self.client.get('/api/trips')
+        response = self.client.get("/api/trips")
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
 
         self.assertIsInstance(data, list)
         self.assertGreaterEqual(len(data), 1)  # At least one trip exists
-        self.assertEqual(data[0]['name'], "Test Trip")
+        self.assertEqual(data[0]["name"], "Test Trip")
 
     def test_delete_trip(self):
         """Test deleting a trip by its ID."""
@@ -78,10 +85,12 @@ class TestRoutes(unittest.TestCase):
             trip = Trip.query.first()
             trip_id = trip.id
 
-        response = self.client.delete(f'/delete_trip/{trip_id}')
+        response = self.client.delete(f"/delete_trip/{trip_id}")
         self.assertEqual(response.status_code, 200)
         json_data = response.get_json()
-        self.assertIn(f"Trip with id {trip_id} deleted successfully!", json_data['message'])
+        self.assertIn(
+            f"Trip with id {trip_id} deleted successfully!", json_data["message"]
+        )
 
         # Verify trip was deleted
         with self.app.app_context():
@@ -90,13 +99,16 @@ class TestRoutes(unittest.TestCase):
 
     def test_get_trip_suggestions(self):
         """Test the trip suggestion endpoint."""
-        response = self.client.post('/api/trip-suggestions', json={
-            "activity": "test",
-            "travelMode": "car",
-            "cost": 100,
-            "carbonFootprint": "low",
-            "duration": 2
-        })
+        response = self.client.post(
+            "/api/trip-suggestions",
+            json={
+                "activity": "test",
+                "travelMode": "car",
+                "cost": 100,
+                "carbonFootprint": "low",
+                "duration": 2,
+            },
+        )
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
         self.assertIsInstance(data, dict)
@@ -119,15 +131,15 @@ class TestRoutes(unittest.TestCase):
 
     def test_add_sample_trips(self):
         """Test adding multiple sample trips."""
-        response = self.client.post('/add_sample_trips')
+        response = self.client.post("/add_sample_trips")
         self.assertEqual(response.status_code, 201)
         json_data = response.get_json()
-        self.assertIn("Sample trips added successfully!", json_data['message'])
+        self.assertIn("Sample trips added successfully!", json_data["message"])
 
         with self.app.app_context():
             trips_count = Trip.query.count()
             self.assertGreater(trips_count, 1)  # Ensure sample trips are added
 
+
 if __name__ == "__main__":
     unittest.main()
-

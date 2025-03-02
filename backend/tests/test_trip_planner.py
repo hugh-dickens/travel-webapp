@@ -1,5 +1,7 @@
 import unittest
+
 from backend.app.trip_planner import Trip, TripPlanner
+
 
 class TestTripPlanner(unittest.TestCase):
 
@@ -7,21 +9,53 @@ class TestTripPlanner(unittest.TestCase):
     def setUpClass(cls):
         """Set up a sample list of trips for testing."""
         cls.sample_trips = [
-            Trip("Rock climbing in Kalymnos", "rock climb", "Kalymnos", 1000, "low", 7, "car"),
-            Trip("Alpine climbing in Ailefroide", "alpine climb", "Ailefroide", 2000, "medium", 10, "train"),
-            Trip("Mountain biking in Dolomites", "mountain bike", "Dolomites", 1500, "low", 5, "plane"),
-            Trip("Hiking in Aosta Valley", "hike", "Aosta Valley", 500, "extremely low", 3, "train"),
+            Trip(
+                "Rock climbing in Kalymnos",
+                "rock climb",
+                "Kalymnos",
+                1000,
+                "low",
+                7,
+                "car",
+            ),
+            Trip(
+                "Alpine climbing in Ailefroide",
+                "alpine climb",
+                "Ailefroide",
+                2000,
+                "medium",
+                10,
+                "train",
+            ),
+            Trip(
+                "Mountain biking in Dolomites",
+                "mountain bike",
+                "Dolomites",
+                1500,
+                "low",
+                5,
+                "plane",
+            ),
+            Trip(
+                "Hiking in Aosta Valley",
+                "hike",
+                "Aosta Valley",
+                500,
+                "extremely low",
+                3,
+                "train",
+            ),
         ]
         cls.planner = TripPlanner(cls.sample_trips)
 
     def test_suggest_trip_exact_match(self):
         """Test if the planner finds an exact match based on user preferences."""
         trip = self.planner.suggest_trip(
-            activity="rock climb", 
-            travel_mode="car", 
-            budget=1000, 
-            carbon_preference="low", 
-            duration=7
+            activity="rock climb",
+            travel_mode="car",
+            budget=1000,
+            carbon_preference="low",
+            duration=7,
         )
         self.assertIsNotNone(trip)
         self.assertEqual(trip.name, "Rock climbing in Kalymnos")
@@ -29,11 +63,11 @@ class TestTripPlanner(unittest.TestCase):
     def test_suggest_trip_flexible_duration(self):
         """Test if the planner suggests a trip when duration is slightly different."""
         trip = self.planner.suggest_trip(
-            activity="hike", 
-            travel_mode="train", 
-            budget=600, 
-            carbon_preference="extremely low", 
-            duration=5  # Duration is greater than available
+            activity="hike",
+            travel_mode="train",
+            budget=600,
+            carbon_preference="extremely low",
+            duration=5,  # Duration is greater than available
         )
         self.assertIsNotNone(trip)
         self.assertEqual(trip.name, "Hiking in Aosta Valley")
@@ -42,10 +76,10 @@ class TestTripPlanner(unittest.TestCase):
     # def test_suggest_trip_budget_limit(self):
     #     """Test if the planner avoids trips that exceed the budget."""
     #     trip = self.planner.suggest_trip(
-    #         activity="alpine climb", 
-    #         travel_mode="train", 
+    #         activity="alpine climb",
+    #         travel_mode="train",
     #         budget=1000,  # Budget is too low for this trip
-    #         carbon_preference="medium", 
+    #         carbon_preference="medium",
     #         duration=10
     #     )
     #     self.assertEqual(trip.name, "No suitable trip found")
@@ -70,8 +104,10 @@ class TestTripPlanner(unittest.TestCase):
     def test_best_value_trip(self):
         """Test if the planner finds the best value trip based on cost per day."""
         best_trip = self.planner.best_value_trip()
-        self.assertEqual(best_trip.name,  "Rock climbing in Kalymnos")  # Cheapest per day
+        self.assertEqual(
+            best_trip.name, "Rock climbing in Kalymnos"
+        )  # Cheapest per day
+
 
 if __name__ == "__main__":
     unittest.main()
-

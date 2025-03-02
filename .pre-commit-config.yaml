@@ -19,7 +19,3 @@ repos:
     hooks:
       - id: isort
 
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: v2.9.6
-    hooks:
-      - id: pylint

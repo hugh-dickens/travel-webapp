@@ -2,16 +2,19 @@
 Setup the main routes for the application
 """
 
-from flask import Blueprint, request, jsonify
-import traceback # for debugging
-from backend.app.trip_planner import Trip, TripPlanner
-from backend.app.models import Trip, db, add_sample_trips
+import traceback  # for debugging
+
+from flask import Blueprint, jsonify, request
+
 from backend.app.helpers import parse_range_or_value
+from backend.app.models import Trip, add_sample_trips, db
+from backend.app.trip_planner import Trip, TripPlanner
 
 # Assuming trip_planner is globally available
 trip_planner = TripPlanner()
 
 main = Blueprint("main", __name__)
+
 
 @main.route("/api/trip-suggestions", methods=["POST"])
 def get_trip_suggestions():
@@ -19,12 +22,18 @@ def get_trip_suggestions():
         preferences = request.json
         if not preferences:
             return jsonify({"error": "Missing JSON payload"}), 400
-        
-        required_keys = ['activity', 'travelMode', 'cost', 'carbonFootprint', 'duration']
+
+        required_keys = [
+            "activity",
+            "travelMode",
+            "cost",
+            "carbonFootprint",
+            "duration",
+        ]
         for key in required_keys:
             if key not in preferences:
                 return jsonify({"error": f"Missing key in request: {key}"}), 400
-        
+
         # Parse cost and duration from range strings
         cost_range = parse_range_or_value(preferences["cost"])
         duration_range = parse_range_or_value(preferences["duration"])
@@ -34,23 +43,28 @@ def get_trip_suggestions():
 
         # Get the best trip suggestion using the TripPlanner logic
         trip = trip_planner.suggest_trip(
-            activity=preferences['activity'],
-            travel_mode=preferences['travelMode'],
+            activity=preferences["activity"],
+            travel_mode=preferences["travelMode"],
             budget=cost_range[1],  # Max budget
-            carbon_preference=preferences['carbonFootprint'].lower(),
-            duration=duration_range[1]  # Max duration
+            carbon_preference=preferences["carbonFootprint"].lower(),
+            duration=duration_range[1],  # Max duration
         )
 
         if trip.name != "No suitable trip found":
-            return jsonify({
-                "name": trip.name,
-                "activity": trip.activity,
-                "destination": trip.destination,
-                "cost": trip.cost,
-                "carbonFootprint": trip.carbon_footprint,
-                "duration": trip.duration,
-                "travelMode": trip.travel_mode
-            }), 200
+            return (
+                jsonify(
+                    {
+                        "name": trip.name,
+                        "activity": trip.activity,
+                        "destination": trip.destination,
+                        "cost": trip.cost,
+                        "carbonFootprint": trip.carbon_footprint,
+                        "duration": trip.duration,
+                        "travelMode": trip.travel_mode,
+                    }
+                ),
+                200,
+            )
         else:
             return jsonify({"message": "No matching trip found."}), 404
 
@@ -60,30 +74,31 @@ def get_trip_suggestions():
         return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
 
-
-@main.route('/add_sample_trips', methods=['POST'])
+@main.route("/add_sample_trips", methods=["POST"])
 def test_add_sample_trips():
     add_sample_trips()
     return {"message": "Sample trips added successfully!"}, 201
-    
 
-''' Example usage:
+
+""" Example usage:
  curl -X POST http://localhost:5000/add_trip \
  -H "Content-Type: application/json" \
  -d '{"name": "Test activity in Test", "activity_type": "testing", "destination": "test", "cost": 123, "carbonFootprint": "testing", "duration": 2, "travelMode": "test"}'
-'''
-@main.route('/add_trip', methods=['POST'])
+"""
+
+
+@main.route("/add_trip", methods=["POST"])
 def add_trip():
     data = request.get_json()
     try:
         new_trip = Trip(
-            name=data['name'],
-            activity_type=data['activity_type'],
-            destination=data['destination'],
-            cost=data['cost'],
-            carbonFootprint=data['carbonFootprint'],
-            duration=data['duration'],
-            travelMode=data['travelMode']
+            name=data["name"],
+            activity_type=data["activity_type"],
+            destination=data["destination"],
+            cost=data["cost"],
+            carbonFootprint=data["carbonFootprint"],
+            duration=data["duration"],
+            travelMode=data["travelMode"],
         )
         db.session.add(new_trip)
         db.session.commit()
@@ -92,14 +107,17 @@ def add_trip():
         return {"error": f"Missing field: {str(e)}"}, 400
 
 
-@main.route('/api/trips', methods=['GET'])
+@main.route("/api/trips", methods=["GET"])
 def get_all_trips():
     trips = Trip.query.all()  # Get all trips from the database
-    trips_list = [{"id": trip.id, "name": trip.name, "activity_type": trip.activity_type} for trip in trips]
+    trips_list = [
+        {"id": trip.id, "name": trip.name, "activity_type": trip.activity_type}
+        for trip in trips
+    ]
     return jsonify(trips_list), 200
 
 
-@main.route('/delete_trip/<int:id>', methods=['DELETE'])
+@main.route("/delete_trip/<int:id>", methods=["DELETE"])
 def delete_trip(id):
     trip = Trip.query.get_or_404(id)
     db.session.delete(trip)
