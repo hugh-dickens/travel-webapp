@@ -1,13 +1,37 @@
-/*
-Display the list of trip suggestions based on user preferences.
-*/
+/**
+ * Displays the suggested trip based on user preferences.
+ * Allows users to save a trip to the backend.
+ */
 
-import React, { useContext } from 'react';
-import { PreferencesContext } from '../context/PreferencesContext';
-import '../styles/styles.css';
+import React, { useContext } from "react";
+import { PreferencesContext } from "../context/PreferencesContext";
+import "../styles/styles.css";
 
 const TripSuggestions = () => {
   const { suggestions, error } = useContext(PreferencesContext);
+
+  /**
+   * Saves the suggested trip to the backend.
+   * @param {Object} trip - The trip object to save.
+   */
+  const saveTrip = async (trip) => {
+    try {
+      const response = await fetch("/api/saved-trips", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ trip_id: trip.id }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Trip saved successfully!");
+      } else {
+        alert("Failed to save trip: " + data.error);
+      }
+    } catch (error) {
+      alert("Error saving trip: " + error.message);
+    }
+  };
 
   return (
     <div className="container">
@@ -33,8 +57,7 @@ const TripSuggestions = () => {
                   <strong>Cost:</strong> £{suggestions.cost}
                 </p>
                 <p className="card-text">
-                  <strong>Carbon Footprint:</strong>{' '}
-                  {suggestions.carbonFootprint}
+                  <strong>Carbon Footprint:</strong> {suggestions.carbonFootprint}
                 </p>
                 <p className="card-text">
                   <strong>Duration:</strong> {suggestions.duration} days
@@ -45,7 +68,12 @@ const TripSuggestions = () => {
                 <a href="#" className="btn btn-success">
                   Explore
                 </a>
-                <button className="btn btn-primary mx-2">Save</button>
+                <button
+                  className="btn btn-primary mx-2"
+                  onClick={() => saveTrip(suggestions)}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>

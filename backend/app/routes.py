@@ -7,7 +7,7 @@ import traceback  # for debugging
 from flask import Blueprint, jsonify, request
 
 from backend.app.helpers import parse_range_or_value
-from backend.app.models import Trip, add_sample_trips, db
+from backend.app.models import Trip, SavedTrip, add_sample_trips, db
 from backend.app.trip_planner import Trip, TripPlanner
 
 # Assuming trip_planner is globally available
@@ -18,6 +18,17 @@ main = Blueprint("main", __name__)
 
 @main.route("/api/trip-suggestions", methods=["POST"])
 def get_trip_suggestions():
+    """
+    Gets a trip suggestion from the data sent by the frontend
+
+    Expects a JSON request with:
+        {
+            ...
+        }
+
+    Returns:
+        JSON response with a success message or an error.
+    """
     try:
         preferences = request.json
         if not preferences:
@@ -74,10 +85,43 @@ def get_trip_suggestions():
         return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
 
-@main.route("/add_sample_trips", methods=["POST"])
-def test_add_sample_trips():
-    add_sample_trips()
-    return {"message": "Sample trips added successfully!"}, 201
+@main.route("/api/saved-trips", methods=["POST"])
+def save_trip():
+    """
+    Saves a trip for the single default user.
+
+    Expects a JSON request with:
+        {
+            "trip_id": <trip_id>
+        }
+
+    Returns:
+        JSON response with a success message or an error.
+    """
+    data = request.json
+    if "trip_id" not in data:
+        return jsonify({"error": "Missing trip_id"}), 400
+
+    trip = Trip.query.get(data["trip_id"])
+    if not trip:
+        return jsonify({"error": "Trip not found"}), 404
+
+    saved_trip = SavedTrip(trip_id=trip.id)
+    db.session.add(saved_trip)
+    db.session.commit()
+    return jsonify({"message": "Trip saved successfully!", "trip": saved_trip.to_dict()}), 201
+
+
+@main.route("/api/saved-trips", methods=["GET"])
+def get_saved_trips():
+    """
+    Retrieves all saved trips for the single user.
+
+    Returns:
+        JSON list of saved trips.
+    """
+    trips = SavedTrip.query.all()
+    return jsonify([trip.to_dict() for trip in trips])
 
 
 """ Example usage:
@@ -109,7 +153,7 @@ def add_trip():
 
 @main.route("/api/trips", methods=["GET"])
 def get_all_trips():
-    trips = Trip.query.all()  # Get all trips from the database
+    trips = Trip.query.all()  # Get all trips from the database. Will need pagination eventually
     trips_list = [
         {"id": trip.id, "name": trip.name, "activity_type": trip.activity_type}
         for trip in trips
