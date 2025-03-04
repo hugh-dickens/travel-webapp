@@ -2,20 +2,26 @@ import React from 'react';
 import PreferencesForm from './components/PreferencesForm';
 import TripSuggestions from './components/TripSuggestions';
 import './styles/styles.css';
+import bannerImage from "./assets/BackgroundBanner.jpg";
 
 const App = () => {
   return (
     <div>
-      {/* Header */}
-      <header className="bg-primary text-white py-4">
-        <div className="container d-flex justify-content-between align-items-center">
-          <a href="/" className="text-white text-decoration-none">
-            Home
-          </a>
-          <h1 className="display-4 mx-auto">Expedition Planner</h1>
-          <a href="/trips" className="text-white text-decoration-none">
-            Saved Trips
-          </a>
+      {/* Header Banner */}
+      <header
+        className="banner"
+        style={{ backgroundImage: `url(${bannerImage})` }}
+      >
+        <div className="overlay">
+          <div className="container d-flex justify-content-between align-items-center">
+            <a href="/" className="text-white text-decoration-none">
+              Home
+            </a>
+            <h1 className="display-4 mx-auto">Expedition Planner</h1>
+            <a href="/trips" className="text-white text-decoration-none">
+              Saved Trips
+            </a>
+          </div>
         </div>
       </header>
 
